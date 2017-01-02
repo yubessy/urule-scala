@@ -21,4 +21,6 @@ object Pattern {
     host = m.get("host").map(_.r),
     path = m.get("path").map(_.r)
   )
+
+  def any = Pattern.build(Map("host" -> "*"))
 }
