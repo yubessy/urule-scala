@@ -2,10 +2,7 @@ package com.github.yubessy.urule
 
 import com.netaporter.uri.Uri
 
-object t {
-  type Action = Either[Seq[Rule], String]
-}
-import t._
+import types._
 
 case class Rule(
   pattern: Pattern,
@@ -25,27 +22,26 @@ case class Rule(
 }
 
 object Rule {
-  def build(x: Any): Rule = x match {
-    case m: Map[String, Map[String, Any]] => Rule(
-      getPattern(m("pattern")),
-      getAction(m("action"))
-    )
-    case s: Seq[Any] => Rule(
-      Pattern.any,
-      subRules(s)
-    )
-  }
+  def apply(m: RuleMap): Rule = Rule(
+    makePattern(m("pattern")),
+    makeAction(m("action"))
+  )
 
-  private def getPattern(p: Map[String, Any]): Pattern =
-    p match { case p: Map[String, String] => Pattern.build(p) }
+  def apply(s: Seq[RuleMap]): Rule = Rule(
+    Pattern.any,
+    makeSubRules(s)
+  )
 
-  private def getAction(a: Map[String, Any]): Action =
+  private def makePattern(p: StringAnyMap): Pattern =
+    p match { case p: Map[String, String] => Pattern(p) }
+
+  private def makeAction(a: StringAnyMap): Action =
     if (a.contains("return")) {
       a("return") match { case s: String => Right(s) }
     } else {
-      a("rules") match { case s: Seq[Any] => subRules(s) }
+      a("rules") match { case s: Seq[RuleMap] => makeSubRules(s) }
     }
 
-  private def subRules(s: Seq[Any]): Action =
-    Left(s.map(Rule.build))
+  private def makeSubRules(s: Seq[RuleMap]): Action =
+    Left(s.map(Rule.apply))
 }
