@@ -22,10 +22,13 @@ case class Rule(
 }
 
 object Rule {
-  def apply(m: RuleMap): Rule = Rule(
-    makePattern(m("pattern")),
-    makeAction(m("action"))
-  )
+  def apply(m: RuleMap): Rule =
+    (
+      for {
+        p <- m.get("pattern")
+        a <- m.get("action")
+      } yield Rule(makePattern(p), makeAction(a))
+    ).getOrElse(throw new Exception("rule must have pattern and action"))
 
   def apply(s: Seq[RuleMap]): Rule = Rule(
     Pattern.any,
