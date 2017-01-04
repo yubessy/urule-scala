@@ -33,13 +33,24 @@ object Rule {
   )
 
   private def makePattern(p: StringAnyMap): Pattern =
-    p match { case p: Map[String, String] => Pattern(p) }
+    p match {
+      case p: Map[String, String] => Pattern(p)
+      case _ => throw new Exception("pattern is wrong")
+    }
 
   private def makeAction(a: StringAnyMap): Action =
     if (a.contains("return")) {
-      a("return") match { case s: String => Right(s) }
+      a("return") match {
+        case s: String => Right(s)
+        case _ => throw new Exception("return value is wrong")
+      }
+    } else if (a.contains("rules")) {
+      a("rules") match {
+        case s: Seq[RuleMap] => makeSubRules(s)
+        case _ => throw new Exception("rules format is wrong")
+      }
     } else {
-      a("rules") match { case s: Seq[RuleMap] => makeSubRules(s) }
+      throw new Exception("rule must contain rules or return")
     }
 
   private def makeSubRules(s: Seq[RuleMap]): Action =
