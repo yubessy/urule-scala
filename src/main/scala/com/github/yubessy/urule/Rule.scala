@@ -8,17 +8,17 @@ case class Rule(
   pattern: Pattern,
   action: Action
 ) {
-  def applyTo(uri: Uri): Option[String] = {
+  def extract(uri: Uri): Option[String] = {
     if (pattern.matchTo(uri)) action match {
       case Right(s) => Some(s)
-      case Left(rules) => applyToMany(uri, rules)
+      case Left(rules) => collectFirst(uri, rules)
     } else {
       None
     }
   }
 
-  private def applyToMany(uri: Uri, rules: Seq[Rule]): Option[String] =
-    rules.view.map(_.applyTo(uri)).collectFirst{ case Some(s) => s }
+  private def collectFirst(uri: Uri, rules: Seq[Rule]): Option[String] =
+    rules.view.map(_.extract(uri)).collectFirst{ case Some(s) => s }
 }
 
 object Rule {
