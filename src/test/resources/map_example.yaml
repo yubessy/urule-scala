@@ -1,0 +1,12 @@
+pattern:
+  host: '.*'
+action:
+  rules:
+    - pattern:
+        path: /foo/
+      action:
+        return: foo
+    - pattern:
+        path: /bar/
+      action:
+        return: bar
