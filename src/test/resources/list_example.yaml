@@ -1,0 +1,12 @@
+- pattern:
+    host: '^example\.com$'
+  action:
+    return: zero
+- pattern:
+    host: '^\w+\.example\.com$'
+  action:
+    return: one
+- pattern:
+    host: '^\w+\.\w+\.example\.com$'
+  action:
+    return: two
