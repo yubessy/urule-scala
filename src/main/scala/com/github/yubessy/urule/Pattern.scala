@@ -1,6 +1,5 @@
 package com.github.yubessy.urule
 
-import com.github.yubessy.urule.types.StringAnyMap
 import com.netaporter.uri.Uri
 
 import scala.util.matching.Regex
@@ -29,7 +28,7 @@ case class Pattern(
 }
 
 object Pattern {
-  def apply(m: StringAnyMap): Pattern = {
+  def apply(m: Map[String, _]): Pattern = {
     val hostRegex = m.get("host").collect { case s: String => s.r }
     val pathRegex = m.get("path").collect { case s: String => s.r }
     val paramsRegex = m.get("params").collect {

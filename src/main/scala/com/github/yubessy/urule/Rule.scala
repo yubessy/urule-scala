@@ -2,8 +2,6 @@ package com.github.yubessy.urule
 
 import com.netaporter.uri.Uri
 
-import types.StringAnyMap
-
 case class Rule(
   pattern: Pattern,
   action: Action
@@ -13,16 +11,16 @@ case class Rule(
 }
 
 object Rule {
-  def apply(m: StringAnyMap): Rule =
+  def apply(m: Map[String, _]): Rule =
     (
       for {
-        p <- m.get("pattern").collect { case m: StringAnyMap => m }
-        a <- m.get("action").collect { case m: StringAnyMap => m }
+        p <- m.get("pattern").collect { case m: Map[String, _] => m }
+        a <- m.get("action").collect { case m: Map[String, _] => m }
       } yield Rule(Pattern(p), Action(a))
-    ).getOrElse(throw new Exception("rule must have both pattern and action"))
+    ).getOrElse(
+      throw new Exception("Rule must contain both pattern and action")
+    )
 
-  def apply(s: Seq[StringAnyMap]): Rule = Rule(
-    Pattern(Map.empty),
-    Action(Map("rules" -> s))
-  )
+  def apply(s: Seq[Map[String, _]]): Rule =
+    Rule(Pattern(Map.empty), Action(Map("rules" -> s)))
 }

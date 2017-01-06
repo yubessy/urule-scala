@@ -2,13 +2,12 @@ package com.github.yubessy.urule.test
 
 import com.github.yubessy.urule.Rule
 import com.github.yubessy.urule.test.helper.YamlLoader
-import com.github.yubessy.urule.types.StringAnyMap
 import com.netaporter.uri.Uri.parse
 import org.scalatest._
 
 class IntegrationSpec extends FunSpec with Matchers {
   describe("map type") {
-    val ruleMap = YamlLoader.load("map_example").asInstanceOf[StringAnyMap]
+    val ruleMap = YamlLoader.load("map_example").asInstanceOf[Map[String, _]]
     val rule = Rule(ruleMap)
 
     it("should match first rule") {
@@ -28,7 +27,7 @@ class IntegrationSpec extends FunSpec with Matchers {
   }
 
   describe("list type") {
-    val ruleMap = YamlLoader.load("list_example").asInstanceOf[Seq[StringAnyMap]]
+    val ruleMap = YamlLoader.load("list_example").asInstanceOf[Seq[Map[String, _]]]
     val rule = Rule(ruleMap)
 
     it("should match first rule") {
