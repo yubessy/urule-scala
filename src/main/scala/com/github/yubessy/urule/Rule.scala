@@ -37,7 +37,7 @@ object Rule {
 
   private def makePattern(p: StringAnyMap): Pattern =
     p match {
-      case p: Map[String, String] => Pattern(p)
+      case p: Map[String, Any] => Pattern.build(p)
       case _ => throw new Exception("pattern is wrong")
     }
 
