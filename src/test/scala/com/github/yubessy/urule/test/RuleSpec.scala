@@ -16,7 +16,7 @@ class RuleSpec extends BaseSpec {
     }
 
     it("should match second rule") {
-      val uri = parse("https://example.com/bar/")
+      val uri = parse("https://example.com/?bar=xxx")
       rule.extract(uri) should equal(Some("bar"))
     }
 

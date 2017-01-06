@@ -1,5 +1,6 @@
 package com.github.yubessy.urule
 
+import com.github.yubessy.urule.types.StringAnyMap
 import com.netaporter.uri.Uri
 
 import scala.util.matching.Regex
@@ -28,25 +29,25 @@ case class Pattern(
 }
 
 object Pattern {
-  def build(m: Map[String, Any]): Pattern = {
-    val hostRegex = m.getOrElse("host", anyString) match {
-      case s: String => s.r
-      case null => anyString.r
-      case _ => throw new Exception("host is not String")
+  def apply(m: StringAnyMap): Pattern = {
+    val hostRegex = m.get("host") match {
+      case Some(s: String) => s.r
+      case _ => anyString
     }
-    val pathRegex = m.getOrElse("path", anyString) match {
-      case s: String => s.r
-      case null => anyString.r
-      case _ => throw new Exception("path is not String")
+    val pathRegex = m.get("path") match {
+      case Some(s: String) => s.r
+      case _ => anyString
+    }
+    val paramsRegex = m.get("params") match {
+      case Some(m: Map[String, String]) => m.mapValues(_.r)
+      case _ => Map.empty[String, Regex]
     }
     Pattern(
       hostRegex = hostRegex,
       pathRegex = pathRegex,
-      paramsRegex = Map.empty
+      paramsRegex = paramsRegex
     )
   }
 
-  val any = build(Map.empty)
-
-  private val anyString = ".*"
+  private def anyString = ".*".r
 }
