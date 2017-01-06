@@ -9,7 +9,7 @@ case class Rule(
   action: Action
 ) {
   def extract(uri: Uri): Option[String] = {
-    if (pattern.matchTo(uri)) action match {
+    if (pattern.matchAll(uri)) action match {
       case Right(s) => Some(s)
       case Left(rules) => collectFirst(uri, rules)
     } else {

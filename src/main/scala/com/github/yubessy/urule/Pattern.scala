@@ -8,10 +8,14 @@ case class Pattern(
   host: Option[Regex],
   path: Option[Regex]
 ) {
-  def matchTo(uri: Uri): Boolean = (
+  def matchAll(uri: Uri): Boolean =
+    matchHost(uri) && matchPath(uri)
+
+  private def matchHost(uri: Uri): Boolean =
     host.forall(_.findFirstIn(uri.host.getOrElse("")).nonEmpty)
-    && path.forall(_.findFirstIn(uri.path).nonEmpty)
-  )
+
+  private def matchPath(uri: Uri): Boolean =
+    path.forall(_.findFirstIn(uri.path).nonEmpty)
 }
 
 object Pattern {
