@@ -6,7 +6,7 @@ case class Rule(
   pattern: Pattern,
   action: Action
 ) {
-  def extract(uri: Uri): Option[String] =
+  def extract(uri: Uri): Option[Map[String, String]] =
     if (pattern.matchAll(uri)) action.invoke(uri) else None
 }
 

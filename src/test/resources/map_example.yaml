@@ -5,9 +5,11 @@ action:
     - pattern:
         path: /foo/
       action:
-        return: foo
+        return:
+           tag: foo
     - pattern:
         params:
           bar: '.*'
       action:
-        return: bar
+        return:
+          tag: bar
