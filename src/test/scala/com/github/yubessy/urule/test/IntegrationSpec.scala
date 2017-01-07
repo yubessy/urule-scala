@@ -12,17 +12,17 @@ class IntegrationSpec extends FunSpec with Matchers {
 
     it("should match first rule") {
       val uri = parse("https://example.com/foo/")
-      rule.extract(uri) should equal(Some(Map("tag" -> "foo")))
+      rule.extract(uri) should equal(Some(Map("host" -> "any", "tag" -> "foo")))
     }
 
     it("should match second rule") {
       val uri = parse("https://example.com/?bar=xxx")
-      rule.extract(uri) should equal(Some(Map("tag" -> "bar")))
+      rule.extract(uri) should equal(Some(Map("host" -> "any", "tag" -> "bar")))
     }
 
     it("should match no rule") {
       val uri = parse("https://example.com/baz/")
-      rule.extract(uri) should equal(None)
+      rule.extract(uri) should equal(Some(Map("host" -> "any")))
     }
   }
 

@@ -1,6 +1,8 @@
 pattern:
   host: '.*'
 action:
+  return:
+    host: any
   rules:
     - pattern:
         path: /foo/

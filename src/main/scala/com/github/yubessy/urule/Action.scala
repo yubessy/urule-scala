@@ -6,12 +6,13 @@ case class Action(
   returns: Option[Map[String, String]],
   subRules: Option[Seq[Rule]]
 ) {
-  def invoke(uri: Uri): Option[Map[String, String]] = {
-    subRules.flatMap(rules => extractByFirst(uri, rules)).orElse(returns)
+  def invoke(uri: Uri, tmp: Option[Map[String, String]]): Option[Map[String, String]] = {
+    val updated = (tmp ++ returns).reduceOption(_ ++ _)
+    subRules.flatMap(rules => extractByFirst(uri, rules, updated)).orElse(updated)
   }
 
-  private def extractByFirst(uri: Uri, rules: Seq[Rule]): Option[Map[String, String]] =
-    rules.view.map(_.extract(uri)).collectFirst { case Some(s) => s }
+  private def extractByFirst(uri: Uri, rules: Seq[Rule], tmp: Option[Map[String, String]]): Option[Map[String, String]] =
+    rules.view.map(_.extract(uri, tmp)).collectFirst { case Some(s) => s }
 }
 
 object Action {
