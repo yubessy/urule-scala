@@ -1,14 +1,11 @@
-- pattern:
-    host: '^example\.com$'
+- host: '^example\.com$'
   return:
     tag: zero
 
-- pattern:
-    host: '^\w+\.example\.com$'
+- host: '^\w+\.example\.com$'
   return:
     tag: one
 
-- pattern:
-    host: '^\w+\.\w+\.example\.com$'
+- host: '^\w+\.\w+\.example\.com$'
   return:
     tag: two

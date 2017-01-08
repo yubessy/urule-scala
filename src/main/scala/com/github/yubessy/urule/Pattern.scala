@@ -28,12 +28,12 @@ case class Pattern(
 }
 
 object Pattern {
+  val keys = Seq("host", "path", "params")
+
   def apply(m: Map[String, _]): Pattern = {
     val hostRegex = m.get("host").collect { case s: String => s.r }
     val pathRegex = m.get("path").collect { case s: String => s.r }
-    val paramsRegex = m.get("params").collect {
-      case m: Map[String, String] => m.mapValues(_.r)
-    }
+    val paramsRegex = m.get("params").collect { case m: Map[String, String] => m.mapValues(_.r) }
     Pattern(hostRegex, pathRegex, paramsRegex)
   }
 }

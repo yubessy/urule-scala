@@ -1,15 +1,12 @@
-pattern:
-  host: '.*'
+host: '.*'
 return:
   host: any
 rules:
-  - pattern:
-      path: /foo/
+  - path: /foo/
     return:
       tag: foo
 
-  - pattern:
-      params:
+  - params:
         bar: '.*'
     return:
         tag: bar
