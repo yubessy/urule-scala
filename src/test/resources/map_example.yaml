@@ -1,17 +1,15 @@
 pattern:
   host: '.*'
-action:
-  return:
-    host: any
-  rules:
-    - pattern:
-        path: /foo/
-      action:
-        return:
-           tag: foo
-    - pattern:
-        params:
-          bar: '.*'
-      action:
-        return:
-          tag: bar
+return:
+  host: any
+rules:
+  - pattern:
+      path: /foo/
+    return:
+      tag: foo
+
+  - pattern:
+      params:
+        bar: '.*'
+    return:
+        tag: bar
