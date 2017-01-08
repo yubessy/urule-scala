@@ -4,7 +4,7 @@ import com.netaporter.uri.Uri
 
 import scala.util.matching.Regex
 
-case class Pattern(
+class Pattern(
   hostRegex: Option[Regex],
   pathRegex: Option[Regex],
   paramsRegex: Option[Map[String, Regex]]
@@ -30,10 +30,10 @@ case class Pattern(
 object Pattern {
   val keys = Seq("host", "path", "params")
 
-  def apply(m: Map[String, _]): Pattern = {
+  def apply(m: PatternElem): Pattern = {
     val hostRegex = m.get("host").collect { case s: String => s.r }
     val pathRegex = m.get("path").collect { case s: String => s.r }
     val paramsRegex = m.get("params").collect { case m: Map[String, String] => m.mapValues(_.r) }
-    Pattern(hostRegex, pathRegex, paramsRegex)
+    new Pattern(hostRegex, pathRegex, paramsRegex)
   }
 }
