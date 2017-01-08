@@ -1,11 +1,11 @@
 - host: '^example\.com$'
-  return:
+  attrs:
     tag: zero
 
 - host: '^\w+\.example\.com$'
-  return:
+  attrs:
     tag: one
 
 - host: '^\w+\.\w+\.example\.com$'
-  return:
+  attrs:
     tag: two

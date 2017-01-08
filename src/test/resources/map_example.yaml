@@ -1,12 +1,12 @@
 host: '.*'
-return:
+attrs:
   host: any
 rules:
   - path: /foo/
-    return:
+    attrs:
       tag: foo
 
   - params:
-        bar: '.*'
-    return:
-        tag: bar
+      bar: '.*'
+    attrs:
+      tag: bar
