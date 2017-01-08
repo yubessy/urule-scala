@@ -7,19 +7,18 @@ class Rule(
   attributes: Attributes,
   children: Seq[Rule]
 ) {
-  def extract(uri: Uri, tmp: Attributes = emptyAttributes): Option[Attributes] = {
-    val matchResult = pattern.matchAll(uri)
-    if (matchResult) {
-      val updated = tmp ++ attributes
-      val childResults = extractByFirst(uri, children)
-      childResults.map(updated ++ _).orElse(Some(updated))
-    } else {
-      None
-    }
-  }
+  def extract(uri: Uri, previous: Attributes = emptyAttributes): Option[Attributes] =
+    pattern.matchAll(uri).map(matchResult => {
+      val current = extractByCurrent(uri, matchResult)
+      val next = extractByChildren(uri)
+      previous ++ current ++ next
+    })
 
-  private def extractByFirst(uri: Uri, rules: Seq[Rule]): Option[Attributes] =
-    rules.view.map(_.extract(uri)).collectFirst { case Some(attributes) => attributes }
+  private def extractByCurrent(uri: Uri, matchResult: MatchResult): Attributes =
+    attributes.mapValues(exp => matchResult.get(exp)).filter(_._2.nonEmpty).mapValues(_.get)
+
+  private def extractByChildren(uri: Uri): Attributes =
+    children.view.map(_.extract(uri)).collectFirst { case Some(attrs) => attrs }.getOrElse(Map.empty)
 }
 
 object Rule {

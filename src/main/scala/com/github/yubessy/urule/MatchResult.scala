@@ -8,10 +8,6 @@ class MatchResult(
   path: Option[Regex.Match],
   params: Map[String, Regex.Match]
 ) {
-  def isEmpty: Boolean = host.isEmpty && path.isEmpty && params.isEmpty
-
-  def nonEmpty: Boolean = !isEmpty
-
   def get(exp: String): Option[String] =
     if (exp.startsWith("$")) eval(exp) else Some(exp)
 
