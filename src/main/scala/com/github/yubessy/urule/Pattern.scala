@@ -18,7 +18,7 @@ class Pattern(
 
   private def matchHostIfNecessary(uri: Uri): Option[Option[Regex.Match]] =
     host match {
-      case Some(re) => for (h <- uri.host) yield re.findFirstMatchIn(h)
+      case Some(re) => uri.host.flatMap(h => re.findFirstMatchIn(h).map(x => Some(x)))
       case None => Some(None)
     }
 
