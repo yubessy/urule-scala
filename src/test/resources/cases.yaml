@@ -6,11 +6,8 @@
 
   cases:
     - url: http://example.com/
-      expected:
-        category: example
-
+      category: example
     - url: http://other.com/
-      expected: ~
 
 
 - caption: seq of rules
@@ -23,15 +20,10 @@
 
   cases:
     - url: http://foo.example.com/
-      expected:
-        category: foo
-
+      category: foo
     - url: http://bar.example.com/
-      expected:
-        category: bar
-
+      category: bar
     - url: http://baz.example.com/
-      expected: ~
 
 
 - caption: rule with children
@@ -47,20 +39,13 @@
 
   cases:
     - url: http://example.com/
-      expected:
-        category: example
-
+      category: example
     - url: http://foo.example.com/
-      expected:
-        category: foo
-
+      category: foo
     - url: http://bar.example.com/
-      expected:
-        category: bar
-
+      category: bar
     - url: http://baz.example.com/
-      expected:
-        category: example
+      category: example
 
 
 - caption: host matcher
@@ -71,11 +56,8 @@
 
   cases:
     - url: http://example.com/
-      expected:
-        category: matched
-
+      category: matched
     - url: http://other.com/
-      expected: ~
 
 
 - caption: path matcher
@@ -86,11 +68,8 @@
 
   cases:
     - url: http://example.com/foo
-      expected:
-        category: foo
-
+      category: foo
     - url: http://example.com/bar
-      expected: ~
 
 
 - caption: params matcher
@@ -103,14 +82,9 @@
 
   cases:
     - url: http://example.com/?foo=aaa&bar=bbb
-      expected:
-        category: matched
-
+      category: matched
     - url: http://example.com/?foo=aaa
-      expected: ~
-
     - url: http://example.com/?foo=aaa&bar=ccc
-      expected: ~
 
 
 - caption: compound matcher
@@ -124,17 +98,10 @@
 
   cases:
     - url: http://example.com/foo?bar=baz
-      expected:
-        category: matched
-
+      category: matched
     - url: http://other.com/foo?bar=baz
-      expected: ~
-
     - url: http://example.com/other?bar=baz
-      expected: ~
-
     - url: http://example.com/foo?bar=other
-      expected: ~
 
 
 - caption: category
@@ -144,16 +111,13 @@
     category: example
     rules:
       - host: '^foo\.example\.com$'
-        category: foo_example
+        category: foo
 
   cases:
     - url: http://example.com/
-      expected:
-        category: example
-
+      category: example
     - url: http://foo.example.com/
-      expected:
-        category: foo_example
+      category: foo
 
 
 - caption: attrs
@@ -171,14 +135,11 @@
 
   cases:
     - url: http://example.com/
-      expected:
-        attrs:
-          dom: example
-          sub: nothing
-
+      attrs:
+        dom: example
+        sub: nothing
     - url: http://foo.example.com/
-      expected:
-        attrs:
-          dom: example
-          sub: foo
-          tld: com
+      attrs:
+        dom: example
+        sub: foo
+        tld: com

@@ -16,18 +16,17 @@ class Spec extends FunSpec with Matchers {
       val caption = m("caption").asInstanceOf[String]
       describe(caption) {
         m("cases").asInstanceOf[Seq[Map[String, _]]].foreach(c => {
-          val expected = c("expected") match {
-            case m: Map[String, _] => Some(Result(
-              category = m.get("category").asInstanceOf[Option[String]],
-              attrs = m.get("attrs").map(_.asInstanceOf[Map[String, String]]).getOrElse(Map.empty)
+          val expected = if (c.keys.exists(k => Seq("category", "attrs").contains(k))) {
+            Some(Result(
+              category = c.get("category").asInstanceOf[Option[String]],
+              attrs = c.get("attrs").map(_.asInstanceOf[Map[String, String]]).getOrElse(Map.empty)
             ))
-            case _ => None
+          } else {
+            None
           }
 
           val url = c("url").asInstanceOf[String]
-          it(url) {
-            rule.applyTo(url) should equal(expected)
-          }
+          it(url) { rule.applyTo(url) should equal(expected) }
         })
       }
     })
