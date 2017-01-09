@@ -12,6 +12,7 @@
     - url: http://other.com/
       expected: ~
 
+
 - caption: seq of rules
 
   rule:
@@ -31,6 +32,7 @@
 
     - url: http://baz.example.com/
       expected: ~
+
 
 - caption: rule with children
 
@@ -60,7 +62,23 @@
       expected:
         category: example
 
-- caption: path matching
+
+- caption: host matcher
+
+  rule:
+    host: '^example\.com$'
+    category: matched
+
+  cases:
+    - url: http://example.com/
+      expected:
+        category: matched
+
+    - url: http://other.com/
+      expected: ~
+
+
+- caption: path matcher
 
   rule:
     path: '^/foo$'
@@ -74,7 +92,8 @@
     - url: http://example.com/bar
       expected: ~
 
-- caption: params matching
+
+- caption: params matcher
 
   rule:
     params:
@@ -93,7 +112,8 @@
     - url: http://example.com/?foo=aaa&bar=ccc
       expected: ~
 
-- caption: complicated matching
+
+- caption: compound matcher
 
   rule:
     host: '^example\.com$'
@@ -115,3 +135,50 @@
 
     - url: http://example.com/foo?bar=other
       expected: ~
+
+
+- caption: category
+
+  rule:
+    host: 'example'
+    category: example
+    rules:
+      - host: '^foo\.example\.com$'
+        category: foo_example
+
+  cases:
+    - url: http://example.com/
+      expected:
+        category: example
+
+    - url: http://foo.example.com/
+      expected:
+        category: foo_example
+
+
+- caption: attrs
+
+  rule:
+    host: 'example'
+    attrs:
+      dom: example
+      sub: nothing
+    rules:
+      - host: '^foo\.example\.com$'
+        attrs:
+          sub: foo
+          tld: com
+
+  cases:
+    - url: http://example.com/
+      expected:
+        attrs:
+          dom: example
+          sub: nothing
+
+    - url: http://foo.example.com/
+      expected:
+        attrs:
+          dom: example
+          sub: foo
+          tld: com
