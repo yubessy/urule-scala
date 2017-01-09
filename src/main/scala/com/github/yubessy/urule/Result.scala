@@ -1,8 +1,9 @@
 package com.github.yubessy.urule
 
 case class Result(
-  attrs: Map[String, String]
+  category: Option[String] = None,
+  attrs: Map[String, String] = Map.empty
 ) {
   def update(newer: Result) =
-    copy(attrs ++ newer.attrs)
+    copy(newer.category.orElse(category), attrs ++ newer.attrs)
 }

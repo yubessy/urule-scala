@@ -12,19 +12,19 @@ class IntegrationSpec extends FunSpec with Matchers {
 
     it("should match first rule") {
       val target = parse("https://example.com/foo/")
-      val expected = Result(Map("host" -> "any", "tag" -> "foo"))
+      val expected = Result(Some("example"), Map("tag" -> "foo"))
       rule.applyTo(target) should contain(expected)
     }
 
     it("should match second rule") {
       val target = parse("https://example.com/?bar=xxx")
-      val expected = Result(Map("host" -> "any", "tag" -> "bar"))
+      val expected = Result(Some("example"), Map("tag" -> "bar"))
       rule.applyTo(target) should contain(expected)
     }
 
     it("should match no rule") {
       val target = parse("https://example.com/baz/")
-      val expected = Result(Map("host" -> "any"))
+      val expected = Result(Some("example"))
       rule.applyTo(target) should contain(expected)
     }
   }
@@ -35,19 +35,19 @@ class IntegrationSpec extends FunSpec with Matchers {
 
     it("should match first rule") {
       val target = parse("https://example.com/")
-      val expected = Result(Map("tag" -> "zero"))
+      val expected = Result(Some("zero"))
       rule.applyTo(target) should contain(expected)
     }
 
     it("should match second rule") {
       val target = parse("https://subdomain.example.com/")
-      val expected = Result(Map("tag" -> "one"))
+      val expected = Result(Some("one"))
       rule.applyTo(target) should contain(expected)
     }
 
     it("should match third rule") {
       val target = parse("https://subsub.domain.example.com/")
-      val expected = Result(Map("tag" -> "two"))
+      val expected = Result(Some("two"))
       rule.applyTo(target) should contain(expected)
     }
   }

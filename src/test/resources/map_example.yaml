@@ -1,6 +1,5 @@
-host: '.*'
-attrs:
-  host: any
+host: '^example.com$'
+category: example
 rules:
   - path: /foo/
     attrs:

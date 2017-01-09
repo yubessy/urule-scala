@@ -1,11 +1,8 @@
 - host: '^example\.com$'
-  attrs:
-    tag: zero
+  category: zero
 
 - host: '^\w+\.example\.com$'
-  attrs:
-    tag: one
+  category: one
 
 - host: '^\w+\.\w+\.example\.com$'
-  attrs:
-    tag: two
+  category: two
