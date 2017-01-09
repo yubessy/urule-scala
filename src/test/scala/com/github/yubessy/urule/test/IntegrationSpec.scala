@@ -1,48 +1,54 @@
 package com.github.yubessy.urule.test
 
-import com.github.yubessy.urule.Rule
+import com.github.yubessy.urule._
 import com.github.yubessy.urule.test.helper.YamlLoader
 import com.netaporter.uri.Uri.parse
 import org.scalatest._
 
 class IntegrationSpec extends FunSpec with Matchers {
   describe("map type") {
-    val ruleMap = YamlLoader.load("map_example").asInstanceOf[Map[String, _]]
-    val rule = Rule(ruleMap)
+    val raw = YamlLoader.load("map_example").asInstanceOf[Map[String, _]]
+    val rule = Rule(raw)
 
     it("should match first rule") {
-      val uri = parse("https://example.com/foo/")
-      rule.extract(uri) should equal(Some(Map("host" -> "any", "tag" -> "foo")))
+      val target = parse("https://example.com/foo/")
+      val expected = Result(Map("host" -> "any", "tag" -> "foo"))
+      rule.applyTo(target) should contain(expected)
     }
 
     it("should match second rule") {
-      val uri = parse("https://example.com/?bar=xxx")
-      rule.extract(uri) should equal(Some(Map("host" -> "any", "tag" -> "bar")))
+      val target = parse("https://example.com/?bar=xxx")
+      val expected = Result(Map("host" -> "any", "tag" -> "bar"))
+      rule.applyTo(target) should contain(expected)
     }
 
     it("should match no rule") {
-      val uri = parse("https://example.com/baz/")
-      rule.extract(uri) should equal(Some(Map("host" -> "any")))
+      val target = parse("https://example.com/baz/")
+      val expected = Result(Map("host" -> "any"))
+      rule.applyTo(target) should contain(expected)
     }
   }
 
   describe("list type") {
-    val ruleMap = YamlLoader.load("list_example").asInstanceOf[Seq[Map[String, _]]]
-    val rule = Rule(ruleMap)
+    val raw = YamlLoader.load("list_example").asInstanceOf[Seq[Map[String, _]]]
+    val rule = Rule(raw)
 
     it("should match first rule") {
-      val uri = parse("https://example.com/")
-      rule.extract(uri) should equal(Some(Map("tag" -> "zero")))
+      val target = parse("https://example.com/")
+      val expected = Result(Map("tag" -> "zero"))
+      rule.applyTo(target) should contain(expected)
     }
 
     it("should match second rule") {
-      val uri = parse("https://subdomain.example.com/")
-      rule.extract(uri) should equal(Some(Map("tag" -> "one")))
+      val target = parse("https://subdomain.example.com/")
+      val expected = Result(Map("tag" -> "one"))
+      rule.applyTo(target) should contain(expected)
     }
 
     it("should match third rule") {
-      val uri = parse("https://subsub.domain.example.com/")
-      rule.extract(uri) should equal(Some(Map("tag" -> "two")))
+      val target = parse("https://subsub.domain.example.com/")
+      val expected = Result(Map("tag" -> "two"))
+      rule.applyTo(target) should contain(expected)
     }
   }
 }

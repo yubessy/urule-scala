@@ -3,41 +3,35 @@ package com.github.yubessy.urule
 import com.netaporter.uri.Uri
 
 class Rule(
-  pattern: Pattern,
-  attributes: Attributes,
+  matcher: Matcher,
+  extractor: Extractor,
   children: Seq[Rule]
 ) {
-  def extract(uri: Uri, previous: Attributes = emptyAttributes): Option[Attributes] =
-    pattern.matchAll(uri).map(matchResult => {
-      val current = extractByCurrent(uri, matchResult)
-      val next = extractByChildren(uri)
-      previous ++ current ++ next
+  def applyTo(uri: Uri, previous: Option[Result] = None): Option[Result] =
+    matcher.matchAll(uri).map(matchResult => {
+      val current = extractor.extract(matchResult)
+      val updated = previous.map(_.update(current)).getOrElse(current)
+      val next = applyToChildren(uri)
+      next.map(n => updated.update(n)).getOrElse(current)
     })
 
-  private def extractByCurrent(uri: Uri, matchResult: MatchResult): Attributes =
-    attributes.mapValues(exp => matchResult.get(exp)).filter(_._2.nonEmpty).mapValues(_.get)
-
-  private def extractByChildren(uri: Uri): Attributes =
-    children.view.map(_.extract(uri)).collectFirst { case Some(attrs) => attrs }.getOrElse(Map.empty)
+  private def applyToChildren(uri: Uri): Option[Result] =
+    children.view.map(_.applyTo(uri)).collectFirst { case Some(r) => r }
 }
 
 object Rule {
-  def apply(m: RuleElem): Rule =
-    new Rule(makePattern(m), makeAttributes(m), makeChildren(m))
+  def apply(e: RawElem): Rule = {
+    val matcher = Matcher(e.filterKeys(k => Matcher.keys.contains(k)))
+    val extractor = Extractor(e.filterKeys(k => Extractor.keys.contains(k)))
+    val children = makeChildren(e)
+    new Rule(matcher, extractor, children)
+  }
 
-  def apply(s: Seq[RuleElem]): Rule =
-    new Rule(Pattern(Map.empty), Map.empty, s.map(Rule.apply))
+  def apply(s: Seq[RawElem]): Rule =
+    new Rule(Matcher(Map.empty), Extractor(Map.empty), s.map(Rule.apply))
 
-  private def makePattern(e: RuleElem): Pattern =
-    Pattern(e.filterKeys(k => Pattern.keys.contains(k)))
-
-  private def makeAttributes(e: RuleElem): Attributes =
-    e.get("attrs").collect {
-      case a: AttributesElem => a.asInstanceOf[Attributes]
-    }.getOrElse(emptyAttributes)
-
-  private def makeChildren(e: RuleElem): Seq[Rule] =
+  private def makeChildren(e: RawElem): Seq[Rule] =
     e.get("rules").collect {
-      case s: Seq[RuleElem] => s.map(Rule.apply)
+      case s: Seq[RawElem] => s.map(Rule.apply)
     }.getOrElse(Seq.empty)
 }
