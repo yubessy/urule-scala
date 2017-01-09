@@ -1,0 +1,117 @@
+- caption: simplest rule
+
+  rule:
+    host: '^example\.com$'
+    category: example
+
+  cases:
+    - url: http://example.com/
+      expected:
+        category: example
+
+    - url: http://other.com/
+      expected: ~
+
+- caption: seq of rules
+
+  rule:
+    - host: '^foo\.example\.com$'
+      category: foo
+    - host: '^bar\.example\.com$'
+      category: bar
+
+  cases:
+    - url: http://foo.example.com/
+      expected:
+        category: foo
+
+    - url: http://bar.example.com/
+      expected:
+        category: bar
+
+    - url: http://baz.example.com/
+      expected: ~
+
+- caption: rule with children
+
+  rule:
+    host: '^(?:\w+\.)?example\.com$'
+    category: example
+    rules:
+      - host: '^foo\.example\.com$'
+        category: foo
+      - host: '^bar\.example\.com$'
+        category: bar
+
+  cases:
+    - url: http://example.com/
+      expected:
+        category: example
+
+    - url: http://foo.example.com/
+      expected:
+        category: foo
+
+    - url: http://bar.example.com/
+      expected:
+        category: bar
+
+    - url: http://baz.example.com/
+      expected:
+        category: example
+
+- caption: path matching
+
+  rule:
+    path: '^/foo$'
+    category: foo
+
+  cases:
+    - url: http://example.com/foo
+      expected:
+        category: foo
+
+    - url: http://example.com/bar
+      expected: ~
+
+- caption: params matching
+
+  rule:
+    params:
+      foo: '^aaa$'
+      bar: '^bbb$'
+    category: matched
+
+  cases:
+    - url: http://example.com/?foo=aaa&bar=bbb
+      expected:
+        category: matched
+
+    - url: http://example.com/?foo=aaa
+      expected: ~
+
+    - url: http://example.com/?foo=aaa&bar=ccc
+      expected: ~
+
+- caption: complicated matching
+
+  rule:
+    host: '^example\.com$'
+    path: '^/foo$'
+    params:
+      bar: '^baz$'
+    category: matched
+
+  cases:
+    - url: http://example.com/foo?bar=baz
+      expected:
+        category: matched
+
+    - url: http://other.com/foo?bar=baz
+      expected: ~
+
+    - url: http://example.com/other?bar=baz
+      expected: ~
+
+    - url: http://example.com/foo?bar=other
+      expected: ~
