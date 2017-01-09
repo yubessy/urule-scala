@@ -6,4 +6,6 @@ case class Result(
 ) {
   def update(newer: Result): Result =
     copy(newer.category.orElse(category), attrs ++ newer.attrs)
+
+  def isEmpty: Boolean = category.isEmpty && attrs.isEmpty
 }

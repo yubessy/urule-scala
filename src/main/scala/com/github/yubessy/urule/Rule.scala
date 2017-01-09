@@ -8,7 +8,7 @@ class Rule(
   children: Seq[Rule]
 ) {
   def applyTo(uri: String): Option[Result] =
-    applyTo(Uri.parse(uri))
+    applyTo(Uri.parse(uri)).flatMap(x => if (x.isEmpty) None else Some(x))
 
   private def applyTo(uri: Uri, parent: Option[Result] = None): Option[Result] =
     matcher.matchAll(uri).map(matchResult => {
