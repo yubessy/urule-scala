@@ -1,8 +1,0 @@
-- host: '^example\.com$'
-  category: zero
-
-- host: '^\w+\.example\.com$'
-  category: one
-
-- host: '^\w+\.\w+\.example\.com$'
-  category: two
