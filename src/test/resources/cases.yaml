@@ -143,3 +143,26 @@
         dom: example
         sub: foo
         tld: com
+
+- caption: capturing
+
+  rule:
+    host: '^(\w+)\.example\.(?<tld>com|org)$'
+    path: '/[^/]+/(.*)'
+    params:
+      foo: '^(.)'
+    attrs:
+      host: '$host.0'
+      sub: '$host.1'
+      tld: '$host.tld'
+      second_path: '$path.1'
+      param_foo_first_char: '$params.foo.1'
+
+  cases:
+    - url: http://aaa.example.com/aaa/bbb?foo=xyz
+      attrs:
+        host: aaa.example.com
+        sub: aaa
+        tld: com
+        second_path: bbb
+        param_foo_first_char: x
