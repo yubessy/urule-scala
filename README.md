@@ -4,7 +4,7 @@ Extract attributes from URL according to custom rule.
 
 ## Usage
 
-Write your own rule in JSON, YAML or any other format that can be parsed to into map and list of strings:
+Write your own rule in JSON, YAML or any other format that can be parsed into JSON-like structured object:
 
 ```yaml
 - host: '^example\.com$'
