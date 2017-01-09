@@ -15,6 +15,9 @@ class Rule(
       next.map(n => updated.update(n)).getOrElse(current)
     })
 
+  def applyTo(uri: String): Option[Result] =
+    applyTo(Uri.parse(uri))
+
   private def applyToChildren(uri: Uri): Option[Result] =
     children.view.map(_.applyTo(uri)).collectFirst { case Some(r) => r }
 }
