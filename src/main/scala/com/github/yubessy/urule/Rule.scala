@@ -7,16 +7,16 @@ class Rule(
   extractor: Extractor,
   children: Seq[Rule]
 ) {
-  def applyTo(uri: Uri, previous: Option[Result] = None): Option[Result] =
-    matcher.matchAll(uri).map(matchResult => {
-      val current = extractor.extract(matchResult)
-      val updated = previous.map(_.update(current)).getOrElse(current)
-      val next = applyToChildren(uri)
-      next.map(n => updated.update(n)).getOrElse(current)
-    })
-
   def applyTo(uri: String): Option[Result] =
     applyTo(Uri.parse(uri))
+
+  private def applyTo(uri: Uri, parent: Option[Result] = None): Option[Result] =
+    matcher.matchAll(uri).map(matchResult => {
+      val current = extractor.extract(matchResult)
+      val updated = parent.map(_.update(current)).getOrElse(current)
+      val child = applyToChildren(uri)
+      child.map(n => updated.update(n)).getOrElse(current)
+    })
 
   private def applyToChildren(uri: Uri): Option[Result] =
     children.view.map(_.applyTo(uri)).collectFirst { case Some(r) => r }
