@@ -2,6 +2,16 @@
 
 Extract attributes from URL according to custom rule.
 
+## Installation
+
+### SBT
+
+```scala
+resolvers += "Urule Scala Maven Repository" at "https://yubessy.github.io/urule-scala/mvn/"
+
+libraryDependencies += "com.github.yubessy" %% "urule" % "0.0.1"
+```
+
 ## Usage
 
 Write your own rule in JSON, YAML or any other format that can be parsed into JSON-like structured object:
