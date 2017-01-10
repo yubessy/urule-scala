@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>default</groupId>
-    <artifactId>urule-scala_2.11</artifactId>
+    <groupId>com.github.yubessy</groupId>
+    <artifactId>urule_2.11</artifactId>
     <packaging>jar</packaging>
-    <description>urule-scala</description>
+    <description>urule</description>
     <version>0.0.1</version>
-    <name>urule-scala</name>
+    <name>urule</name>
     <organization>
-        <name>default</name>
+        <name>com.github.yubessy</name>
     </organization>
     <dependencies>
         <dependency>
