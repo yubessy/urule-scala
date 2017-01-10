@@ -18,7 +18,7 @@ libraryDependencies ++= Seq(
 
 publishTo := Some(
   Resolver.file(
-    "gh-pages", file(".")
+    "gh-pages", file("mvn")
   )(
     Patterns(true, Resolver.mavenStyleBasePattern)
   )
