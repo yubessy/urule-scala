@@ -1,5 +1,9 @@
-name := "urule-scala"
+name := "urule"
+
+organization := "com.github.yubessy"
+
 version := "0.0.1"
+
 scalaVersion := "2.11.8"
 
 libraryDependencies ++= Seq(
@@ -14,7 +18,7 @@ libraryDependencies ++= Seq(
 
 publishTo := Some(
   Resolver.file(
-    "urule-scala", file(".")
+    "gh-pages", file(".")
   )(
     Patterns(true, Resolver.mavenStyleBasePattern)
   )
