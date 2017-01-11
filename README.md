@@ -14,6 +14,8 @@ libraryDependencies += "com.github.yubessy" %% "urule" % "0.0.1"
 
 ## Usage
 
+### Quickstart
+
 Write your own rule in JSON, YAML or any other format that can be parsed into JSON-like structured object:
 
 ```yaml
@@ -29,7 +31,7 @@ Write your own rule in JSON, YAML or any other format that can be parsed into JS
       attrs:
         path: bar
 
-- host: '^another.example\.com$'
+- host: '^another\.example\.com$'
   attrs:
     host: example.com
     subdomain: another
@@ -62,3 +64,7 @@ rule.applyTo("http://another.example.com/")
 rule.applyTo("http://other.com/")
 // => None
 ```
+
+### Detail
+
+No docs are available currently. See [test cases](/blob/master/src/test/resources/cases.yaml) for detailed usage.
