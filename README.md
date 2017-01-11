@@ -67,4 +67,4 @@ rule.applyTo("http://other.com/")
 
 ### Detail
 
-No docs are available currently. See [test cases](./blob/master/src/test/resources/cases.yaml) for detailed usage.
+No docs are available currently. See [test cases](./src/test/resources/cases.yaml) for detailed usage.
