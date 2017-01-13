@@ -13,16 +13,16 @@ class MatchResult(
 
   private def eval(query: String): Option[String] =
     query match {
-      case q("host", group, null) => host.flatMap(_.get(group))
-      case q("path", group, null) => path.flatMap(_.get(group))
-      case q("params", key, group) => params.get(key).flatMap(_.get(group))
+      case q("host", group, null) => host.flatMap(_.getGroup(group))
+      case q("path", group, null) => path.flatMap(_.getGroup(group))
+      case q("params", key, group) => params.get(key).flatMap(_.getGroup(group))
       case _ => None
     }
 
   private val q = """^\$(host|path|params)(?:\.(\w+))(?:\.(\w+))?$""".r
 
   implicit private class WrappedRegexMatch(m: Regex.Match) {
-    def get(g: String): Option[String] =
-      (for (i <- Try(g.toInt)) yield Try(m.group(i))).getOrElse(Try(m.group(g))).toOption
+    def getGroup(g: String): Option[String] =
+      Try(m.group(g.toInt)).orElse(Try(m.group(g))).toOption
   }
 }

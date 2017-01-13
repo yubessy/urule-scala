@@ -8,9 +8,9 @@ class Rule(
   children: Seq[Rule]
 ) {
   def applyTo(uri: String): Option[Result] =
-    applyTo(Uri.parse(uri)).flatMap(x => if (x.isEmpty) None else Some(x))
+    applyTo(Uri.parse(uri), None).flatMap(x => if (x.isEmpty) None else Some(x))
 
-  private def applyTo(uri: Uri, parent: Option[Result] = None): Option[Result] =
+  private def applyTo(uri: Uri, parent: Option[Result]): Option[Result] =
     matcher.matchAll(uri).map(matchResult => {
       val current = extractor.extract(matchResult)
       val updated = parent.map(_.update(current)).getOrElse(current)
@@ -19,22 +19,27 @@ class Rule(
     })
 
   private def applyToChildren(uri: Uri): Option[Result] =
-    children.view.map(_.applyTo(uri)).collectFirst { case Some(r) => r }
+    children.view.map(_.applyTo(uri, None)).collectFirst { case Some(r) => r }
 }
 
 object Rule {
-  def apply(e: RawElem): Rule = {
-    val matcher = Matcher(e.filterKeys(k => Matcher.keys.contains(k)))
-    val extractor = Extractor(e.filterKeys(k => Extractor.keys.contains(k)))
-    val children = makeChildren(e)
-    new Rule(matcher, extractor, children)
-  }
+  def apply(e: RawElem): Rule =
+    new Rule(
+      matcher = Matcher(e.filterKeys(Matcher.keys.contains)),
+      extractor = Extractor(e.filterKeys(Extractor.keys.contains)),
+      children = makeChildren(e)
+    )
 
   def apply(s: Seq[RawElem]): Rule =
-    new Rule(Matcher(Map.empty), Extractor(Map.empty), s.map(Rule.apply))
+    new Rule(
+      matcher = Matcher(Map.empty),
+      extractor = Extractor(Map.empty),
+      children = s.map(Rule.apply)
+    )
 
   private def makeChildren(e: RawElem): Seq[Rule] =
-    e.get("rules").collect {
-      case s: Seq[RawElem] => s.map(Rule.apply)
-    }.getOrElse(Seq.empty)
+    e.get("rules") match {
+      case Some(s: Seq[RawElem]) => s.map(Rule.apply)
+      case _ => Seq.empty
+    }
 }
