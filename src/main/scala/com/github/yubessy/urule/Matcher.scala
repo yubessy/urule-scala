@@ -43,10 +43,10 @@ class Matcher(
 object Matcher {
   val keys = Seq("host", "path", "params")
 
-  def apply(e: RawElem): Matcher = {
-    val hostRegex = e.get("host").collect { case s: String => s.r }
-    val pathRegex = e.get("path").collect { case s: String => s.r }
-    val paramsRegex = e.get("params").collect { case m: Map[String, String] => m.mapValues(_.r) }
-    new Matcher(hostRegex, pathRegex, paramsRegex)
-  }
+  def apply(e: RawElem): Matcher =
+    new Matcher(
+      host = e.get("host").collect { case s: String => s.r },
+      path = e.get("path").collect { case s: String => s.r },
+      params = e.get("params").collect { case m: Map[String, String] => m.mapValues(_.r) }
+    )
 }
