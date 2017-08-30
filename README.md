@@ -9,7 +9,7 @@ Extract attributes from URL according to custom rule.
 ```scala
 resolvers += "Urule Scala Maven Repository" at "https://yubessy.github.io/urule-scala/mvn/"
 
-libraryDependencies += "com.github.yubessy" %% "urule" % "0.0.2"
+libraryDependencies += "com.github.yubessy" %% "urule" % "0.0.3"
 ```
 
 ## Usage
