@@ -68,3 +68,16 @@ rule.applyTo("http://other.com/")
 ### Detail
 
 No docs are available currently. See [test cases](./src/test/resources/cases.yaml) for detailed usage.
+
+## Build and Publish
+
+### Use Github Pages as Maven Repository
+
+```
+$ git checkout master
+$ sbt publish
+$ git checkout gh-pages
+$ git add mvn/
+$ git commit -m "vx.x.x"
+$ git push origin gh-pages
+```
