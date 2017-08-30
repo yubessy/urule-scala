@@ -2,9 +2,15 @@ name := "urule"
 
 organization := "com.github.yubessy"
 
-version := "0.0.2"
+version := "0.0.3"
 
 scalaVersion := "2.11.8"
+
+crossScalaVersions := Seq(
+  "2.10.6",
+  "2.11.8",
+  "2.12.3"
+)
 
 libraryDependencies ++= Seq(
   "com.netaporter" %% "scala-uri" % "0.4.16",
